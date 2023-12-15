@@ -17,4 +17,16 @@ class InvoiceController extends Controller
         ]);
     }
 
+    public function searchInvoice() : JsonResponse
+    {
+        $search = request()->get('search');
+        $searchInvoice = Invoice::with('customer')
+                                ->where('id','LIKE',"%$search%")
+                                ->get();
+
+        return response()->json([
+            'invoices' => $searchInvoice
+        ]);
+    }
+
 }
