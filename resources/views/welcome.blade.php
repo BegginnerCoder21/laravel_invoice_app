@@ -8,7 +8,7 @@
         @vite(['resources/css/app.css'])
     </head>
     <body id="app">
-        
-    @vite(['resources/js/app.js'])
+
+    @vite(['resources/js/app.js'  ])
     </body>
 </html>

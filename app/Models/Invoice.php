@@ -23,7 +23,7 @@ class Invoice extends Model
         'total'
     ];
 
-    public function user() : BelongsTo
+    public function customer() : BelongsTo
     {
         return $this->belongsTo(Customer::class);
     }
