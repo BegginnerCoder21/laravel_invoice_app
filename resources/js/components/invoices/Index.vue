@@ -5,12 +5,17 @@
     <div class="flex flex-col">
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 absolute ml-2 top-5 z-10 text-gray-300">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                    </svg>
-
-                    <input v-model="searchInvoice" @keyup="search" class="flex relative border-[1px] pl-12 rounded-md w-[40%] p-[5px] outline-none  border-gray-300 mt-3 mb-3" type="text" placeholder="Recherche">
+                <div class="flex flex-row">
+                    <div class="flex flex-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 absolute ml-2 top-5 z-10 text-gray-300">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                        </svg>
+    
+                        <input v-model="searchInvoice" @keyup="search" class="flex relative border-[1px] pl-12 rounded-md w-[40%] p-[5px] outline-none  border-gray-300 mt-3 mb-3" type="text" placeholder="Recherche">
+                    </div>
+                    <div class="mt-5">
+                        <RouterLink to="/newinvoice" class="py-2 px-4 rounded-md bg-blue-400 text-white">Créer facture</RouterLink>
+                    </div>
                 </div>
                 <div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -60,8 +65,6 @@
                             <tr v-for="invoices in allInvoices">
                                 <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
                                     <div class="inline-flex items-center gap-x-3">
-                                        <input type="checkbox" class="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700">
-
                                         <span>#{{ invoices.id }}</span>
                                     </div>
                                 </td>
@@ -103,8 +106,8 @@
                             </tr>
 
                         </tbody>
-                        <h1 class="text-center text-gray-500" v-text="isEmpty"></h1>
                     </table>
+                    <h1 class="text-center text-gray-500" v-text="isEmpty"></h1>
                 </div>
             </div>
         </div>

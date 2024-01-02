@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Invoices;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use App\Models\Invoice;
+use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 
 class InvoiceController extends Controller
@@ -26,6 +28,24 @@ class InvoiceController extends Controller
 
         return response()->json([
             'invoices' => $searchInvoice
+        ]);
+    }
+
+    public function getAllCustomers() : JsonResponse
+    {
+        $customers = Customer::latest()->get();
+
+        return response()->json([
+            'customers' => $customers
+        ]);
+    }
+
+    public function getAllProducts() : JsonResponse
+    {
+
+        $products = Product::with('invoices')->latest()->take(10)->get();
+        return response()->json([
+            'products' => $products
         ]);
     }
 

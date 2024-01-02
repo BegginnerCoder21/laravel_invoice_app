@@ -1,10 +1,10 @@
 <script setup>
 import { RouterView } from 'vue-router';
 
-    console.log('hello world')
 </script>
 
 <template>
+        <!-- le contenu des composants sera affiché ici -->
         <RouterView />
 </template>
 
