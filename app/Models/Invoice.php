@@ -20,7 +20,9 @@ class Invoice extends Model
         'term_and_condition',
         'sub_total',
         'discount',
-        'total'
+        'total',
+        'unit_price',
+        'quantity'
     ];
 
     public function customer() : BelongsTo

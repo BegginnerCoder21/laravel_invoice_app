@@ -1,7 +1,7 @@
 <template>
-    <div class="min-h-screen flex justify-center bg-gray-100 items-center">
+    <div class="min-h-screen flex-col flex justify-center bg-gray-100 items-center">
 
-        <div class=" border-[1px]  w-[52%] h-[650px] border-blue-400 rounded-md bg-white overflow-y-auto">
+        <div class=" border-[1px]  w-[52%] h-[600px] border-blue-400 rounded-md bg-white overflow-y-auto">
             <div class="px-6 py-4 flex flex-col">
                 <h2 class="text-lg text-gray-700 mb-3">Creation d'une nouvelle facture</h2>
                 <div class="space-y-4">
@@ -10,7 +10,7 @@
                             <option value="name" disabled>
                                 Choisir le client
                             </option>
-                            <option v-for="customer in all_customers" :key="customer.id">
+                            <option  v-for="customer in all_customers" :key="customer.id" :value="customer.id">
                                 {{ customer.firstname }} {{ customer.lastname }}
                             </option>
                         </select>
@@ -101,7 +101,7 @@
                             </div>
                             <div class="flex flex-row space-x-44">
                                 <h3>Total</h3>
-                                <p>{{ total() }} fcfa</p>
+                                <p>{{ Total() }} fcfa</p>
                             </div>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
         </div>
         <!-- add modal items -->
         <div class="modal main__modal " :class="{show : showModal}">
-        <div class="modal__content">
+            <div class="modal__content">
             <span class="modal__close btn__close--modal" @click="openModal()">×</span>
             <h3 class="modal__title">Add Item</h3>
             <hr><br>
@@ -126,12 +126,15 @@
             <br><hr>
             <div class="model__footer">
                 <button class="btn btn-light mr-2 btn__close--modal" @click="openModal()">
-                    Cancel
+                    Annuler
                 </button>
-                <button class="btn btn-light btn__close--modal ">Save</button>
+                <button class="btn btn-light btn__close--modal ">Ok</button>
+            </div>
             </div>
         </div>
-    </div>
+        <div class="ml-[40%]">
+            <button type="button" class="bg-blue-400 py-2 px-4 rounded-md my-2 mx-6 text-white" @click="onSave()">Enregistrer</button>
+        </div>
     </div>
 </template>
 
@@ -139,13 +142,15 @@
 
 import axios from "axios";
 import type typeCart from '../../types/typeCart';
-import { onMounted, ref } from "vue";
+import { onMounted, ref} from "vue";
+import { useRouter } from "vue-router";
 const all_customers = ref();
 const form = ref([]);
 const customer_id = ref([]);
 const showModal = ref(false);
 const listCart = ref<typeCart[]>([]);
 const listProduct = ref();
+const router = useRouter();
 
 const deleteLine = (product) => {
     listCart.value.splice(product,1)
@@ -154,8 +159,7 @@ const deleteLine = (product) => {
 const newInvoice = async () =>  {
     let response = await axios.get('/api/new-invoice');
     form.value = response.data;
-    console.log('form',form.value);
-    
+
 }
 
 const allCustomers = async () => {
@@ -168,15 +172,14 @@ const openModal = () => {
 }
 
 const addCart = (product) => {
-    console.log(product);
-    
+
     const productCart = {
         id : product.id,
         item_code : product.code_item,
         description : product.description,
         unit_price : product.unit_price,
         quantity : product.quantity ?? 1
-    }
+    };
 
     listCart.value.push(productCart);
 }
@@ -196,9 +199,45 @@ const subTotal = () => {
     return total;
 }
 
-const total = () => {
-    
+const Total = () => {
+
     return subTotal() - form.value.discount;
+}
+
+const onSave = async() => {
+
+    if(!customer_id || !form.value.reference || !form.value.date || !form.value.due_date || !form.value.number){
+        return console.log({
+            'reference' : form.value.reference,
+            'date' : form.value.date,
+            'due_date' : form.value.due_date,
+            'number' : form.value.number,
+            'customer_id' : customer_id.value
+        });
+
+        
+        
+    }
+    let sub_total = subTotal();
+    let total = Total();
+
+    const formData = new FormData();
+    
+    formData.append('invoice_item',JSON.stringify(listCart.value));
+    formData.append('customer_id',customer_id.value);
+    formData.append('reference',form.value.reference);
+    formData.append('date',form.value.date);
+    formData.append('due_date',form.value.due_date);
+    formData.append('number',form.value.number);
+    formData.append('discount',form.value.discount);
+    formData.append('subtotal',sub_total);
+    formData.append('total',total);
+    formData.append('term_and_condition',form.value.term_and_condition);
+    
+    
+    let response = await axios.post('api/add-invoice',formData).catch((err) => console.log(err));
+    listCart.value = [];
+    router.push('/');
 }
 onMounted(async() => {
     await newInvoice();

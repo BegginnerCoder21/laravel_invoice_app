@@ -13,7 +13,8 @@ class Product extends Model
     protected $fillable = [
       'code_item',
       'description',
-      'unit_price'
+      'unit_price',
+        'quantity'
     ];
     public function invoices() : BelongsToMany
     {
