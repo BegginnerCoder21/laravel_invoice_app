@@ -25,3 +25,4 @@ Route::get('/new-invoice',\App\Http\Controllers\Invoices\NewInvoiceController::c
 Route::get('/all-customers',[InvoiceController::class,'getAllCustomers'])->name('all.customers');
 Route::get('/all-products',[InvoiceController::class,'getAllProducts'])->name('all.products');
 Route::post('/add-invoice',\App\Http\Controllers\invoices\AddInvoiceController::class)->name('add.invoice');
+Route::get('/show-invoice/{id}',[InvoiceController::class,'getInvoice'])->name('get.invoice');

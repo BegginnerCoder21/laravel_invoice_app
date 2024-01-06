@@ -98,7 +98,7 @@
                                 <td class="px-4 py-4 text-sm whitespace-nowrap">
                                     <div class="flex items-center pl-6">
 
-                                        <button class="text-blue-500 transition-colors duration-200 hover:text-indigo-500 focus:outline-none">
+                                        <button @click="showInvoice(invoices.id)" class="text-blue-500 transition-colors duration-200 hover:text-indigo-500 focus:outline-none">
                                             Download
                                         </button>
                                     </div>
@@ -152,8 +152,10 @@
 
 import axios from "axios";
 import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 const allInvoices = ref();
 const searchInvoice = ref();
+const route = useRouter();
 const isEmpty = ref('');
 
 const getAllInvoices = async() => {
@@ -177,8 +179,13 @@ const search = async() => {
         isEmpty.value = "Aucune facture n'a été trouvé !";
     }
 }
+
+const showInvoice = (id : string) =>{
+    route.push(`show-invoice/${id}`);
+}
 onMounted(async() => {
     await getAllInvoices();
+    
 });
 
 

@@ -12,6 +12,8 @@ class AddInvoiceController extends Controller
     public function __invoke(Request $request)
     {
 
+
+
         $invoce_item = $request->input('invoice_item');
         $invoice_data = [
             'customer_id' => $request->input('customer_id'),

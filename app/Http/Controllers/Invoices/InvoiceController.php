@@ -49,4 +49,13 @@ class InvoiceController extends Controller
         ]);
     }
 
+    public function getInvoice($id) : JsonResponse
+    {
+        $invoice = Invoice::with('customer','products')->find($id);
+
+        return response()->json([
+            'invoice' => $invoice
+        ]);
+    }
+
 }

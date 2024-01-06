@@ -12,6 +12,11 @@ const router = createRouter({
             component: () => import('../components/invoices/NewInvoice.vue')
         },
         {
+            path: '/show-invoice/:id',
+            component: () => import('../components/invoices/ShowInvoice.vue'),
+            props : true
+        },
+        {
             //renvoie le composant PageNotFound pour tous les url
             //qui n'existe pas parmi nos routes
             path: '/:pathMatch(.*)*',
